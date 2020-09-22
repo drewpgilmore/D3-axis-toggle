@@ -17,8 +17,7 @@ var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
 var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 
 // Select body, append SVG area to it, and set the dimensions
-var svg = d3
-  .select("#scatter")
+var svg = d3.select("#scatter")
   .append("svg")
   .attr("height", svgHeight)
   .attr("width", svgWidth);
@@ -30,8 +29,6 @@ var chartGroup = svg.append("g")
 
 // Load data from hours-of-tv-watched.csv
 d3.csv("assets/data/data.csv").then(d => {
-
-    console.log(d);
     
     // clean data and change types to number
     d.forEach(d => {
@@ -52,15 +49,25 @@ d3.csv("assets/data/data.csv").then(d => {
     var obesePct = d.map(d => d.obesity);
     var smokersPct = d.map(d => d.smokes);
     var noHealthCarePct = d.map(d => d.healthcare);
-  
-    var barSpacing = 10; // desired space between each bar
-    var scaleY = 10; // 10x scale on rect height
-  
-    // Create a 'barWidth' variable so that the bar chart spans the entire chartWidth.
-    var barWidth = (chartWidth - (barSpacing * (d.length - 1))) / d.length;
-  
-    // @TODO
-    // Create code to build the bar chart using the tvData.
+
+    var x = d3.scaleBand()
+        .domain()
+        .range([0, 1])
+        .padding(0.05);
+    svg.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(x));
+    
+    var y = d3.scaleLinear()
+        .domain([0, 1])
+        .range([chartHeight, 0]);
+    svg.append("g")
+        // .attr("transform", `translate(${chartHeight})`)
+        .call(d3.axisLeft(y));
+
+
+    
+    // create scatter plot
     chartGroup.selectAll("#scatter")
       .data(d)
       .enter()
