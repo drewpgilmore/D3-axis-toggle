@@ -27,56 +27,62 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
 
-// Load data from hours-of-tv-watched.csv
-d3.csv("assets/data/data.csv").then(d => {
-    
-    // clean data and change types to number
-    d.forEach(d => {
-        d.poverty = +d.poverty;
-        d.age = +d.age;
-        d.income = +d.income;
-        d.obesity = +d.obesity;
-        d.smokes = +d.smokes;
-        d.healthcare = +d.healthcare;
-    });
+var chosenXAxis = "poverty";
+var chosenYAxis = "healthcare";
 
-    // x axis variables
-    var povertyPct = d.map(d => d.poverty);
-    var medianAge = d.map(d => d.age);
-    var medianIncome = d.map(d => d.income);
-    
-    // y axis variables
-    var obesePct = d.map(d => d.obesity);
-    var smokersPct = d.map(d => d.smokes);
-    var noHealthCarePct = d.map(d => d.healthcare);
+function xScale(data, chosenXAxis) {
+  var xScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d[chosenXAxis]) - 2.5,
+    d3.max(data, d => d[chosenXAxis]) + 2.5
+    ])
+    .range([0, width]);
+  return xScale;
+}
 
-    var x = d3.scaleBand()
-        .domain()
-        .range([0, 1])
-        .padding(0.05);
-    svg.append("g")
-        .attr("transform", `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(x));
-    
-    var y = d3.scaleLinear()
-        .domain([0, 1])
-        .range([chartHeight, 0]);
-    svg.append("g")
-        // .attr("transform", `translate(${chartHeight})`)
-        .call(d3.axisLeft(y));
+function yScale(data, chosenYAxis) {
+  var yScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d[chosenXAxis]) - 2.5,
+    d3.max(data, d => d[chosenYAxis]) + 2.5
+    ])
+    .range([height, 0]);
+  return yScale;
+}
 
+function renderX(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+  return xAxis;
+}
 
-    
-    // create scatter plot
-    chartGroup.selectAll("#scatter")
-      .data(d)
-      .enter()
-      .append("rect")
-      .classed("bar", true)
-      .attr("width", d => barWidth)
-      .attr("height", d => d.poverty * scaleY)
-      .attr("x", (d, i) => i * (barWidth + barSpacing))
-      .attr("y", d => chartHeight - d.poverty * scaleY);
-  }).catch(function(error) {
-    console.log(error);
-});
+function renderY(newYScale, yAxis) {
+  var leftAxis = d3.axisLeft(newYScale);
+  yAxis.transition()
+    .duration(1000)
+    .call(leftAxis);
+  return yAxis;
+}
+
+function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cx", d => newXScale(d[chosenXAxis]))
+    .attr("cy", d => newYScale(d[chosenYAxis]));
+  return circlesGroup;
+}
+
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+  var xLabel;
+  if (chosenXAxis == "poverty") {
+    xLabel = "In Poverty (%)";
+  }
+  else if (chosenXAxis == "age") {
+    xLabel == "Age (Median)";
+  }
+  else if (chosenXAxis == "income") {
+    xLabel == "Household Income (Median)";
+  }
+
+  var y
+}
