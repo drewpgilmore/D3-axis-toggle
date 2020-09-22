@@ -84,5 +84,33 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     xLabel == "Household Income (Median)";
   }
 
-  var y
+  var yLabel; 
+  if (chosenYAxis == "healthcare") {
+    yLabel = "Lacks Healthcare (%)";
+  }
+  else if (chosenYAxis == "smokes") {
+    yLabel = "Smokes (%)";
+  }
+  else if (chosenYAxis == "obesity") {
+    yLabel = "Obesity (%)";
+  }
+
+  var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([80, -60])
+    .html(function(d) {
+      return (`${d.state} <br> ${d[chosenYAxis]} <br> ${d[chosenXAxis]}`);
+    });
+
+  circlesGroup.call(toolTip);
+
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+  return circlesGroup;
+
 }
