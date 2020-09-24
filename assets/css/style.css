@@ -9,6 +9,10 @@ html {
   min-height: 100%;
 }
 
+h1 {
+  text-align: center;
+}
+
 body {
   /* Padding bottom by footer height */
   padding-bottom: 80px;
