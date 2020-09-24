@@ -16,7 +16,8 @@ var height = svgHeight - chartMargin.top - chartMargin.bottom;
 var svg = d3.select("#scatter")
   .append("svg")
   .attr("height", svgHeight)
-  .attr("width", svgWidth);
+  .attr("width", svgWidth)
+  .style("margin-bottom", 30);
 
 // Append a group to the SVG area and shift ('translate') it to the right and down to adhere
 // to the margins set in the "chartMargin" object.
@@ -96,8 +97,9 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   }
 
   var toolTip = d3.tip()
-    .attr("class", "tooltip")
-    .offset([80, -60])
+    .attr("class", "d3-tip")
+    .offset([100, 0])
+    .attr("fill", "black")
     .html(function(d) {
       return (`${d.state} <br>${chosenYAxis}: ${d[chosenYAxis]} <br>${chosenXAxis}: ${d[chosenXAxis]}`);
     });
@@ -144,11 +146,14 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     .data(censusData)
     .enter()
     .append("circle")
+    .attr("id", "Circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
     .attr("r", 10)
     .attr("fill", "blue")
-    .attr("opacity", "0.5");
+    .style("fill-opacity", "0.5")
+    .attr("stroke", "black")
+    .style("stroke-width", 2);
 
   var xLabelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
