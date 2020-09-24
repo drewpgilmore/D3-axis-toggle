@@ -1,5 +1,5 @@
 // set SVG area dimensions
-var svgWidth = 960;
+var svgWidth = 1140;
 var svgHeight = 660;
 
 // set chart margins and dimensions
