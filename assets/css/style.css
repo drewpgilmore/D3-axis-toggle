@@ -7,11 +7,12 @@
 html {
   position: relative;
   min-height: 100%;
+  margin-top: 20px;
 }
 
-h1 {
+/* h1 {
   text-align: center;
-}
+} */
 
 body {
   /* Padding bottom by footer height */
@@ -32,4 +33,10 @@ body {
 #footer p {
   margin: 0;
   font-size: 16px;
+}
+
+.highlighted {
+  background-color: chartreuse;
+  font-size: 30px;
+  font-weight: bolder;
 }
