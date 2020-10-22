@@ -6,6 +6,7 @@
 
 .active {
   font-weight: bold;
+  font-size: 22px;
   fill: #000;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
@@ -13,6 +14,7 @@
 
 .inactive {
   font-weight: lighter;
+  font-size: 22px;
   fill: #c9c9c9;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
@@ -42,7 +44,7 @@
 
 .d3-tip {
   padding: 6px;
-  font-size: 12px;
+  font-size: 18px;
   line-height: 1;
   line-height: 1.5em;
   color: #fff;
