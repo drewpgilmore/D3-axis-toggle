@@ -1,13 +1,13 @@
 // set SVG area dimensions
-var svgWidth = 1140;
+var svgWidth = 855;
 var svgHeight = 660;
 
 // set chart margins and dimensions
 var chartMargin = {
   top: 30,
   right: 30,
-  bottom: 100,
-  left: 100
+  bottom: 120,
+  left: 120
 };
 var width = svgWidth - chartMargin.left - chartMargin.right;
 var height = svgHeight - chartMargin.top - chartMargin.bottom;
@@ -51,7 +51,7 @@ function yScale(data, chosenYAxis) {
 function renderX(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
   xAxis.transition()
-    .duration(1000)
+    .duration(700)
     .call(bottomAxis);
   return xAxis;
 }
@@ -59,7 +59,7 @@ function renderX(newXScale, xAxis) {
 function renderY(newYScale, yAxis) {
   var leftAxis = d3.axisLeft(newYScale);
   yAxis.transition()
-    .duration(1000)
+    .duration(700)
     .call(leftAxis);
   return yAxis;
 }
@@ -67,7 +67,7 @@ function renderY(newYScale, yAxis) {
 // function to plot circles per the chose variables
 function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
   circlesGroup.transition()
-    .duration(1000)
+    .duration(700)
     .attr("cx", d => newXScale(d[chosenXAxis]))
     .attr("cy", d => newYScale(d[chosenYAxis]));
   return circlesGroup;
@@ -115,7 +115,6 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   return circlesGroup;
 }
 
-
 var variables = ["poverty", "age", "income", "healthcare", "smokes", "obesity"];
 
 d3.csv("assets/data/data.csv").then(function(censusData, err) {
@@ -160,19 +159,19 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 
   var povertyLabel = xLabelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 20)
+    .attr("y", 35)
     .attr("value", "poverty")
     .classed("active", true)
     .text("In Poverty (%)");
   var ageLabel = xLabelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 45)
+    .attr("y", 65)
     .attr("value", "age")
     .classed("active", true)
     .text("Age (Median)");
   var incomeLabel = xLabelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 70)
+    .attr("y", 95)
     .attr("value", "income")
     .classed("active", true)
     .text("Household Income (Median)");
@@ -184,13 +183,13 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 
   var healthcareLabel = yLabelsGroup.append("text")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - 85)
+    .attr("y", 0 - 95)
     .attr("value", "healthcare")
     .classed("active", true)
     .text("Lacks Healthcare (%)");
   var smokesLabel = yLabelsGroup.append("text")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - 60)
+    .attr("y", 0 - 65)
     .attr("value", "smokes")
     .classed("active", true)
     .text("Smokes (%)");
@@ -281,7 +280,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
           .classed("active", false)
           .classed("inactive", true);
       }
-      else if (chosenYAxis == "obese") {
+      else if (chosenYAxis == "obesity") {
         healthcareLabel
           .classed("active", false)
           .classed("inactive", true);
